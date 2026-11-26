@@ -1,90 +1,134 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#080817"><title>SPACE 0.3</title>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SPACE 0.4 — 8-BIT PIXEL UNIVERSE</title>
 <style>
-:root{--bg:#080d1b;--p:#111c30;--p2:#17243b;--line:#2b3d59;--cyan:#65e8f2;--violet:#a98aff;--gold:#f3c477;--muted:#91a4bd;--text:#edf5ff;--red:#ff7288}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,sans-serif}button{font:inherit;cursor:pointer}.hidden{display:none!important}
-.btn{border:1px solid #42617e;background:linear-gradient(#1b4961,#123047);color:#effcff;border-radius:9px;padding:10px 13px;font-size:11px;font-weight:800}.btn.primary{background:linear-gradient(135deg,#57478f,#245576);border-color:#8877d6}.btn.gold{background:linear-gradient(#70532c,#3d2e1c);border-color:#a47b43;color:#ffe4ad}.btn:disabled{opacity:.35;cursor:not-allowed}
-#menu{position:fixed;inset:0;z-index:20;display:grid;place-items:center;overflow:hidden;background:#080817}.nebula{position:absolute;inset:-20%;background:radial-gradient(ellipse at 25% 45%,#713eaa99,transparent 32%),radial-gradient(ellipse at 72% 38%,#344bba88,transparent 34%),radial-gradient(ellipse at 50% 78%,#a02d8266,transparent 30%),#080817;animation:drift 25s ease-in-out infinite alternate}.nebula:after{content:"";position:absolute;inset:0;background-image:radial-gradient(1px 1px at 8% 16%,#fff 99%,transparent),radial-gradient(2px 2px at 22% 72%,#d8c8ff 99%,transparent),radial-gradient(1px 1px at 37% 28%,#fff 99%,transparent),radial-gradient(1px 1px at 66% 14%,#fff 99%,transparent),radial-gradient(1px 1px at 81% 59%,#fff 99%,transparent);background-size:360px 280px;animation:twinkle 5s infinite alternate}@keyframes drift{to{transform:translate(3%,-2%) scale(1.08)}}@keyframes twinkle{to{opacity:.35}}
-.menu-card{z-index:1;width:min(420px,calc(100% - 30px));padding:30px 22px;text-align:center;border:1px solid #9c83d455;border-radius:22px;background:#10132dcc;backdrop-filter:blur(12px);box-shadow:0 25px 90px #0009}.logo{font-size:clamp(48px,13vw,72px);font-weight:950;letter-spacing:.2em;text-shadow:0 0 28px #a88aff;margin-right:-.2em}.logo span{color:#c5b3ff}.tag{font-size:10px;letter-spacing:.2em;color:#b4b3d3;margin:8px 0 28px}.menu-actions{display:grid;gap:10px}.menu-actions button{padding:14px}.menu-foot{font-size:9px;color:#7985a5;margin-top:22px;letter-spacing:.12em}
-.app{max-width:1120px;margin:auto;padding:12px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.brand{font-weight:950;font-size:20px;letter-spacing:.16em}.brand span{color:var(--cyan)}.sub{font-size:9px;color:var(--muted);letter-spacing:.1em}.pill{font-size:10px;border:1px solid var(--line);border-radius:30px;padding:6px 9px;color:var(--muted)}
-.resources{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px}.res,.panel{background:linear-gradient(145deg,#14223a,#0d1728);border:1px solid var(--line);border-radius:12px}.res{padding:8px 10px}.res small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase}.res b{font-size:17px;color:var(--gold)}
-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;position:sticky;top:0;z-index:5;background:#080d1bee;padding:5px 0 9px;backdrop-filter:blur(8px)}nav button{border:1px solid var(--line);background:#111a2c;color:var(--muted);border-radius:10px;padding:11px 4px;font-size:11px;font-weight:850}nav button.active{background:#1a3850;border-color:#58bfca;color:#c7fbff}
-.view{display:none}.view.active{display:block}.panel{padding:13px;min-width:0}.head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}.head h2{font-size:13px;letter-spacing:.1em;margin:0}.muted{color:var(--muted)}.tiny{font-size:10px}.title{font-size:11px;color:var(--cyan);letter-spacing:.1em;font-weight:850;margin:0 0 8px}
-.galaxy-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(245px,.8fr);gap:10px}.map{position:relative;border:1px solid #29415e;border-radius:10px;overflow:hidden;background:radial-gradient(ellipse,#1b3656,#071322 70%)}canvas{display:block;width:100%;height:350px;touch-action:manipulation}.ship-focus{position:absolute;left:50%;top:51%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;filter:drop-shadow(0 0 12px #65e8f2)}.ship-focus b{display:block;font-size:34px;animation:float 4s infinite ease-in-out}.ship-focus small{font-size:9px;letter-spacing:.1em}@keyframes float{50%{transform:translateY(-6px)}}
-.card{background:#0c192b;border:1px solid #263c58;border-radius:10px;padding:11px;margin-bottom:8px}.card h3{font-size:13px;margin:0 0 4px}.card p{font-size:10px;color:var(--muted);margin:0}.statsline,.data{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #203149;padding:8px 0;font-size:11px}.statsline{font-size:10px;color:var(--muted)}.data span{color:var(--muted)}.actions{display:flex;gap:7px;margin-top:9px}.actions>*{flex:1}.log{font-size:10px;color:#afc1d5;max-height:115px;overflow:auto}.log div{padding:4px 0;border-bottom:1px solid #203149}
-.station-layout{display:grid;grid-template-columns:180px minmax(0,1fr);gap:10px}.station-menu{display:grid;gap:6px;align-content:start}.station-menu button{border:1px solid var(--line);border-radius:8px;background:#0b1728;color:var(--muted);padding:10px;text-align:left;font-size:11px;font-weight:750}.station-menu button.active{color:#c7fbff;border-color:#59b9c8;background:#123146}.station-page{display:none}.station-page.active{display:block}.goods{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.good{background:#0b192a;border:1px solid #273c56;border-radius:9px;padding:10px}.good b{font-size:11px}.good p{font-size:9px;color:var(--muted);min-height:35px}.good button{width:100%}
-.ship-layout{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ship-art{height:220px;display:grid;place-items:center;border-radius:10px;background:radial-gradient(ellipse,#214465,#0b1425 70%);border:1px solid #29415e;font-size:85px;filter:drop-shadow(0 0 10px #65e8f2)}.ship-choice{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#0b182a;border:1px solid var(--line);border-radius:9px;padding:9px;margin-bottom:7px}.ship-choice small{display:block;color:var(--muted);font-size:9px}.ship-choice b{font-size:11px}
-#battle{position:fixed;inset:0;z-index:40;background:radial-gradient(ellipse at center,#39182c,#080b17 70%);display:grid;place-items:center;padding:12px}.battle-card{width:min(700px,100%);background:#141526;border:1px solid #87495d;border-radius:16px;padding:15px}.battle-title{text-align:center;color:#ff8798;font-weight:900;letter-spacing:.18em}.battlefield{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}.fighter{border:1px solid #3a4057;border-radius:10px;padding:10px;text-align:center;background:#10192a}.fighter.enemy{border-color:#88485d}.fighter .emoji{display:block;font-size:50px;margin:8px}.health{height:8px;background:#30384c;border-radius:10px;overflow:hidden}.health i{display:block;height:100%;width:100%;background:#67d9a7}.enemy .health i{background:#ef687d}.battle-status{text-align:center;font-size:11px;color:#d4c9e7;min-height:32px}.footer{text-align:center;color:#5a6c86;font-size:9px;margin:12px}
-.ship-home{min-height:310px;position:relative;overflow:hidden;border:1px solid #29415e;border-radius:12px;background:radial-gradient(ellipse at 50% 55%,#23476a 0%,#101d36 38%,#081323 75%);display:grid;place-items:center;text-align:center}
-.ship-home:before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 25%,#8b70dc22,transparent 30%),radial-gradient(ellipse at 80% 70%,#4cc9e522,transparent 32%)}
-.ship-home-art{position:relative;z-index:1;font-size:clamp(90px,22vw,150px);filter:drop-shadow(0 0 24px #65e8f2aa);transform:rotate(-12deg)}
-.ship-home-label{position:absolute;z-index:2;bottom:16px;left:0;right:0;font-size:11px;letter-spacing:.18em;color:#d9faff;text-shadow:0 2px 8px #000}
-.nearby-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
-.nearby{background:#0c192b;border:1px solid #263c58;border-radius:10px;padding:10px;text-align:left;color:var(--text)}.nearby b{display:block;font-size:11px}.nearby small{color:var(--muted);font-size:9px}
-.map-screen{position:fixed;inset:0;z-index:30;background:radial-gradient(ellipse at 50% 40%,#172c4b,#070d19 75%);display:flex;flex-direction:column;padding:10px;overflow:auto}
-.map-screen-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0 10px}.map-screen-top h2{font-size:14px;letter-spacing:.12em;margin:0}
-.map-screen-canvas{flex:1;min-height:55vh;border:1px solid #34506f;border-radius:12px;overflow:hidden;background:#081323;position:relative}
-.map-screen-canvas canvas{height:100%;min-height:55vh}.map-screen-bottom{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding-top:10px}
-.map-info{background:#111d31;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:10px;color:var(--muted)}.map-info b{display:block;color:var(--text);font-size:12px;margin-bottom:3px}
-@media(max-width:740px){.ship-home{min-height:290px}.map-screen{padding:8px}.map-screen-canvas,.map-screen-canvas canvas{min-height:62vh}}
-@media(max-width:740px){.app{padding:9px}.resources{grid-template-columns:repeat(2,1fr)}.galaxy-layout,.station-layout,.ship-layout{grid-template-columns:1fr}.station-menu{grid-template-columns:repeat(2,1fr)}.station-menu button{text-align:center}.map{min-height:290px}canvas{height:290px}.panel{padding:10px}}
-@media(max-width:380px){.goods{grid-template-columns:1fr}nav button{font-size:10px}.battlefield{gap:5px}.fighter{padding:7px}}
-</style></head><body>
-<div id="menu"><div class="nebula"></div><div class="menu-card"><div class="logo"><span>✦</span>SPACE</div><div class="tag">НЕИЗВЕДАННАЯ ВСЕЛЕННАЯ ЖДЁТ</div><div class="menu-actions"><button class="btn primary" id="newGame">НОВАЯ ИГРА</button><button class="btn" id="continue">ПРОДОЛЖИТЬ</button><button class="btn" id="saves">ВЫБОР СОХРАНЕНИЯ</button><button class="btn" id="settings">НАСТРОЙКИ</button></div><div class="menu-foot">ОДИНОЧНАЯ КОСМИЧЕСКАЯ КАМПАНИЯ · 0.3</div></div></div>
-<div class="app" id="game" hidden>
-<header class="top"><div><div class="brand"><span>✦</span> SPACE</div><div class="sub">КОСМИЧЕСКАЯ ЭКОНОМИЧЕСКАЯ СТРАТЕГИЯ</div></div><div class="pill">ПИЛОТ · 01</div></header>
-<div class="resources"><div class="res"><small>Кредиты</small><b id="money">300</b></div><div class="res"><small>Топливо</small><b id="fuel">5 / 12</b></div><div class="res"><small>Корпус</small><b id="hull">100%</b></div><div class="res"><small>Трюм</small><b id="cargoCount">0 / 4</b></div></div>
-<nav><button class="active" data-view="galaxy">✦ ГАЛАКТИКА</button><button data-view="station">▣ КОСМОПОРТ</button><button data-view="ship">◆ КОРАБЛЬ</button></nav>
-<section class="view active" id="v-galaxy"><div class="panel"><div class="head"><h2>КОРАБЛЬ В КОСМОСЕ</h2><span class="muted tiny" id="countSystems">— систем</span></div><div class="ship-home"><div class="ship-home-art" id="shipHomeArt">🚀</div><div class="ship-home-label">«СТРАННИК» · ТЕКУЩАЯ ЗВЁЗДНАЯ СИСТЕМА</div></div><div class="head" style="margin-top:12px"><h2>БЛИЖАЙШИЕ СИСТЕМЫ</h2><button class="btn primary" id="openMap">ОТКРЫТЬ КАРТУ ГАЛАКТИКИ ↗</button></div><div class="nearby-grid" id="nearbySystems"></div><div class="card" style="margin-top:10px"><h3 id="here">СОЛАРИС-01</h3><p id="hereDesc">Текущая система. Космопорт доступен.</p><div class="statsline"><span id="hereType">Тип: неизвестен</span><span>Станция: есть</span></div></div><div class="card"><h3 id="dest">Цель не выбрана</h3><p id="destDesc">Выбери ближайшую систему на карте галактики.</p><div class="statsline"><span id="dist">Дальность: —</span><span id="jumpFuel">Топливо: —</span></div><div class="actions"><button class="btn primary" id="jump" disabled>СОВЕРШИТЬ ПРЫЖОК</button></div></div><div class="title">БОРТОВОЙ ЖУРНАЛ</div><div class="log" id="log"></div></div></section>
-<section class="view" id="v-station"><div class="panel"><div class="head"><h2 id="stationTitle">КОСМОПОРТ · СОЛАРИС-01</h2><span class="muted tiny">ОРБИТАЛЬНАЯ СТАНЦИЯ</span></div><div class="station-layout"><div class="station-menu"><button class="active" data-page="market">Торговый рынок</button><button data-page="fuel">Заправка</button><button data-page="shipyard">Верфь</button><button data-page="repair">Ремонт</button><button data-page="contracts">Контракты</button><button data-page="info">Система</button></div><div>
-<div class="station-page active" id="p-market"><div class="title">ТОВАРНАЯ БИРЖА</div><div class="goods" id="goods"></div><div class="data"><span>Трюм</span><b id="marketHold">0 / 4</b></div><button class="btn gold" id="sell" style="width:100%;margin-top:8px">ПРОДАТЬ ВЕСЬ ГРУЗ</button></div>
-<div class="station-page" id="p-fuel"><div class="title">ТОПЛИВНЫЙ ТЕРМИНАЛ</div><div class="card"><h3>Атомное топливо</h3><p>Цена меняется в зависимости от экономики и запасов системы.</p><div class="data"><span>Цена за единицу</span><b id="fuelPrice">—</b></div><div class="data"><span>Запас станции</span><b id="fuelStock">—</b></div><div class="data"><span>Вместимость бака</span><b id="fuelCap">12</b></div></div><div class="actions"><button class="btn" id="fuelOne">+1 ТОПЛИВО</button><button class="btn primary" id="fuelFull">ЗАПРАВИТЬ ДО ПОЛНОГО</button></div><p class="muted tiny">Баланс защищён: на маршруте всегда предусмотрена доступная заправка, а аварийная цена не должна блокировать игру.</p></div>
-<div class="station-page" id="p-shipyard"><div class="title">ВЕРФЬ · ОБМЕН КОРАБЛЯ</div><p class="muted tiny">У пилота один активный корабль. При покупке текущий сдаётся в зачёт.</p><div id="yard"></div></div>
-<div class="station-page" id="p-repair"><div class="title">РЕМОНТНЫЙ ДОК</div><div class="data"><span>Состояние корпуса</span><b id="repairHull">100%</b></div><div class="data"><span>Стоимость ремонта</span><b id="repairCost">0 cr</b></div><button class="btn primary" id="repair" style="width:100%;margin-top:10px">ОТРЕМОНТИРОВАТЬ</button></div>
-<div class="station-page" id="p-contracts"><div class="title">ДОСКА КОНТРАКТОВ</div><div class="card"><h3>Торговая доставка</h3><p>Перевези не менее двух единиц товара в другую систему.</p><div class="data"><span>Награда</span><b>350 cr</b></div><button class="btn gold" id="accept">ПРИНЯТЬ КОНТРАКТ</button></div><p class="muted tiny" id="missionStatus">Контракт не принят.</p></div>
-<div class="station-page" id="p-info"><div class="title">ПАСПОРТ ЗВЁЗДНОЙ СИСТЕМЫ</div><div class="data"><span>Название</span><b id="infoName">—</b></div><div class="data"><span>Специализация</span><b id="infoType">Неизвестна</b></div><div class="data"><span>Население</span><b id="infoPop">—</b></div><div class="data"><span>Экономика</span><b id="infoEco">—</b></div><div class="data"><span>Космопорт</span><b>Работает</b></div></div>
-</div></div></div></section>
-<section class="view" id="v-ship"><div class="ship-layout"><div class="panel"><div class="head"><h2>МОЙ КОРАБЛЬ</h2><span class="muted tiny">АКТИВНЫЙ</span></div><div class="ship-art" id="shipArt">🚀</div><h2 id="shipName">«Странник»</h2><p class="muted tiny" id="shipClass">Лёгкий разведчик</p><div id="shipStats"></div></div><div class="panel"><div class="head"><h2>КОРАБЛИ</h2><span class="muted tiny">10 КЛАССОВ</span></div><p class="muted tiny">Можно сменить корабль на верфи. Одновременно используется только один.</p><div id="shipChoices"></div></div></div></section>
-<div class="footer">SPACE · ПРОТОТИП 0.3</div></div>
-<div id="mapScreen" class="map-screen hidden">
- <div class="map-screen-top"><button class="btn" id="closeMap">← НАЗАД К КОРАБЛЮ</button><h2>КАРТА ГАЛАКТИКИ</h2><span class="muted tiny" id="mapSystemCount">— систем</span></div>
- <div class="map-screen-canvas"><canvas id="map"></canvas></div>
- <div class="map-screen-bottom"><div class="map-info"><b id="mapTargetName">Выбери звёздную систему</b><span id="mapTargetInfo">На карте показаны текущая система и доступные маршруты.</span></div><button class="btn primary" id="mapJump" disabled>ПРЫЖОК</button></div>
- <p class="muted tiny">Золотая точка — ты здесь · голубые — посещённые · серые — неизвестные системы.</p>
+:root{--violet:#7900a8;--purple:#b000ef;--cyan:#36eaff;--green:#00a982;--ink:#09051c}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08051b;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;touch-action:none}
+#game{position:relative;width:100%;height:100dvh;min-height:520px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#24105b 0,#10072c 48%,#050817 100%)}
+canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
+.hud{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}
+.panel{background:linear-gradient(180deg,rgba(16,26,58,.92),rgba(8,9,30,.86));border:1px solid rgba(74,226,255,.48);box-shadow:0 0 16px #1b9cce35,inset 0 0 12px #5c4dff20;border-radius:8px;padding:8px 11px}
+.brand{font-size:12px;letter-spacing:2px;color:#8cf7ff;font-weight:900}.coords{font-size:10px;color:#b7c5ff;margin-top:3px}.stats{text-align:right;font-size:11px;color:#dce9ff}.stats b{color:#5ff5ff;font-size:14px}
+.hint{position:absolute;top:74px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:1px;color:#d8caff;background:#170b35a8;border:1px solid #9e4bff55;border-radius:20px;padding:6px 11px;white-space:nowrap;pointer-events:none}
+.ship{position:absolute;left:50%;top:48%;width:0;height:0;transform:translate(-50%,-50%);z-index:4;filter:drop-shadow(0 0 8px #ff315d)}
+.ship svg{width:54px;height:76px;overflow:visible;transform-origin:50% 50%;transition:transform .12s}
+.ship .trail{position:absolute;left:50%;top:55px;transform:translateX(-50%);width:18px;height:44px;background:linear-gradient(#ff4b89aa,transparent);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);filter:blur(3px)}
+.crosshair{position:absolute;left:50%;top:48%;width:110px;height:110px;transform:translate(-50%,-50%);border:1px dashed #4ceeff35;border-radius:50%;pointer-events:none}
+.controls{position:absolute;bottom:0;left:0;right:0;height:23%;min-height:150px;max-height:210px;background:linear-gradient(180deg,transparent 0%,#26003d 22%,#520078 100%);clip-path:polygon(0 12%,35% 55%,39% 100%,61% 100%,65% 55%,100% 12%,100% 100%,0 100%);z-index:5}
+.controlbar{position:absolute;bottom:18px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:clamp(18px,7vw,42px);z-index:6}
+.ctrl{width:64px;height:64px;border-radius:50%;border:2px solid #a5faff;background:radial-gradient(circle at 35% 25%,#226f83,#09253c 70%);color:#dfffff;box-shadow:0 0 15px #21dfff77,inset 0 0 12px #36f5ff44;display:grid;place-items:center;font-size:28px;font-weight:900;user-select:none;-webkit-tap-highlight-color:transparent}
+.ctrl.forward{width:82px;height:82px;border-color:#7dffe1;background:radial-gradient(circle at 35% 25%,#14c9a1,#00644f 70%);box-shadow:0 0 22px #00ffc477,inset 0 0 14px #caffef55;font-size:32px}
+.ctrl:active{transform:scale(.93);filter:brightness(1.4)}.ctrl small{display:block;font-size:8px;letter-spacing:1px;margin-top:-7px}
+.ctrlwrap{display:flex;flex-direction:column;align-items:center;gap:5px}.label{font-size:9px;color:#b9faff;letter-spacing:1px;text-shadow:0 1px 4px #000}
+.system-card{position:absolute;left:50%;top:16%;transform:translateX(-50%);z-index:3;padding:7px 10px;border-radius:7px;background:#100c2bd9;border:1px solid #7d5aff66;font-size:10px;color:#d8d1ff;white-space:nowrap;pointer-events:none}
+.toast{position:absolute;left:50%;bottom:25%;transform:translate(-50%,10px);background:#071d2beF;border:1px solid #47eaff;border-radius:8px;padding:8px 12px;font-size:11px;color:#cfffff;opacity:0;transition:.2s;z-index:8;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.legend{position:absolute;left:12px;bottom:24%;font-size:9px;color:#c2b9ef;line-height:1.7;pointer-events:none;text-shadow:0 1px 3px #000}
+.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+@media(min-width:700px){#game{max-width:430px;margin:auto;border-left:1px solid #46316b;border-right:1px solid #46316b}.hud{top:18px}.controls{height:190px}}
+</style>
+</head>
+<body>
+<div id="game">
+<canvas id="space"></canvas>
+<div class="hud">
+ <div class="panel"><div class="brand">SPACE // 0.4 · 8-BIT</div><div class="coords" id="coords">СЕКТОР 07 : 014</div></div>
+ <div class="panel stats">СИСТЕМЫ <b id="count">128</b><br>ТОПЛИВО <b id="fuel">24</b></div>
 </div>
-<div id="battle" class="hidden"><div class="battle-card"><div class="battle-title">⚠ НЕОЖИДАННОЕ НАПАДЕНИЕ</div><p class="muted tiny" style="text-align:center">Вражеский корабль атакует. Системы вооружения ведут автоматический бой.</p><div class="battlefield"><div class="fighter"><b id="pBattleName">СТРАННИК</b><span class="emoji">🚀</span><div class="health"><i id="pHealth"></i></div><small id="pHpText">Корпус 100%</small></div><div class="fighter enemy"><b id="eBattleName">ПИРАТ</b><span class="emoji">🛸</span><div class="health"><i id="eHealth"></i></div><small id="eHpText">Корпус 100%</small></div></div><div class="battle-status" id="battleStatus">Автобой начался…</div><button class="btn" id="battleDone" disabled style="width:100%">ПРОДОЛЖИТЬ ПУТЬ</button></div></div>
+<div class="hint">ПИЛОТИРОВАНИЕ · СВОБОДНЫЙ ПОЛЁТ</div>
+<div class="system-card" id="nearby">БЛИЖАЙШАЯ СИСТЕМА: ЭЛЬТАР</div>
+<div class="crosshair"></div>
+<div class="ship" id="ship">
+ <div class="trail"></div>
+ <svg viewBox="0 0 64 88" shape-rendering="crispEdges" aria-label="Пиксельный корабль игрока">
+  <g stroke="#17142c" stroke-width="2" stroke-linejoin="miter">
+   <path fill="#9bff42" d="M8 42h8V25h5v-8h5v18h-5v20h-8v-7H8zM56 42h-8V25h-5v-8h-5v18h5v20h8v-7h5z"/>
+   <path fill="#d72d65" d="M27 3h10v8h5v10h5v19h-7v12H24V40h-7V21h5V11h5z"/>
+   <path fill="#f6d9e6" d="M27 3h10v8H27zM22 18h5v9h-5zM37 18h5v9h-5zM17 34h7v8h-7zM40 34h7v8h-7z"/>
+   <path fill="#3ce8ff" d="M29 17h6v7h4v17h-4v9h-6v-9h-4V24h4z"/>
+   <path fill="#fff1a8" d="M29 11h6v6h-6z"/>
+   <path fill="#a7b8ca" d="M24 49h16v7H24zM19 56h7v8h-7zM38 56h7v8h-7z"/>
+   <path fill="#ff4b9a" d="M21 64h5v12h-5zM38 64h5v12h-5z"/>
+   <path fill="#fff" d="M28 55h8v6h-8z"/>
+  </g>
+  <path d="M23 76h4l-2 8zM37 76h4l-2 8z" fill="#48f4ff"/>
+ </svg>
+</div>
+<div class="legend"><i style="background:#55f4ff"></i>известная система<br><i style="background:#ffbf48"></i>неизученная система<br><i style="background:#d65cff"></i>туманность</div>
+<div class="controls"></div>
+<div class="controlbar">
+ <div class="ctrlwrap"><button class="ctrl" id="left" aria-label="Повернуть влево">↶</button><span class="label">ВЛЕВО</span></div>
+ <div class="ctrlwrap"><button class="ctrl forward" id="forward" aria-label="Лететь вперёд">▲</button><span class="label">ВПЕРЁД</span></div>
+ <div class="ctrlwrap"><button class="ctrl" id="right" aria-label="Повернуть вправо">↷</button><span class="label">ВПРАВО</span></div>
+</div>
+<div class="toast" id="toast"></div>
+</div>
 <script>
-const TYPES=[["agri","Аграрный мир","Планеты-сады и продовольственные колонии.","Сельское хозяйство",["food","bio"]],["factory","Фабрика","Промышленные центры и производство сплавов.","Промышленность",["titan","parts"]],["military","Военный мир","Гарнизоны, верфи и оборонные комплексы.","Военный сектор",["weapon","shield"]],["tech","Высокие технологии","Научные центры и передовые разработки.","Технологии",["crystal","module"]],["pirate","Пиратский мир","Незаконные рынки и опасные сделки.","Теневая экономика",["contraband","parts"]]];
-const GOODS={food:["Синтез-пайки",60],bio:["Биоматериалы",95],titan:["Титановые сплавы",120],parts:["Механические детали",150],weapon:["Оружейные системы",230],shield:["Плазменные модули",190],crystal:["Криокристаллы",180],module:["Нейромодули",260],contraband:["Контрабанда",210]};
-const SHIPS=[["wanderer","Странник","Лёгкий разведчик",0,4,12,1,8,100,1,0,"🚀"],["swift","Стриж","Скоростной курьер",950,3,14,1,10,85,1,1,"🛸"],["trader","Купец","Торговый корабль",1800,12,18,2,5,110,1,1,"🚚"],["hauler","Голиаф","Тяжёлый транспорт",3200,20,24,3,3,160,1,2,"🛰️"],["interceptor","Фантом","Перехватчик",4200,3,16,2,10,120,4,2,"✈️"],["corvette","Страж","Корвет",6500,6,20,2,7,190,5,4,"🚀"],["destroyer","Гром","Эсминец",9800,7,25,3,6,260,7,5,"🛸"],["cruiser","Титан","Крейсер",15000,12,32,4,4,380,8,8,"🚀"],["science","Оракул","Научный корабль",12500,10,36,2,6,180,2,4,"🛰️"],["battleship","Колосс","Линкор",26000,15,42,5,3,600,10,10,"🚀"]];
-const $=id=>document.getElementById(id),rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,fmt=n=>Math.round(n).toLocaleString("ru-RU"),KEY="space-v03";
-let S=null,target=null,busy=false;
-function T(s){return TYPES.find(t=>t[0]===s.type)}function V(){return SHIPS.find(s=>s[0]===S.ship)}function here(){return S.systems[S.current]}function cargo(){return Object.values(S.cargo).reduce((a,b)=>a+b,0)}function save(){localStorage.setItem(KEY,JSON.stringify(S))}
-function newGame(){let n=rnd(100,500),arr=[];for(let i=0;i<n;i++){let t=TYPES[rnd(0,4)];arr.push({id:i,name:i===0?"СОЛАРИС-01":["АЛЬТАИР","ВЕГА","КЕПЛЕР","НОВА","ОРИОН","ЭРИДАН","СИРИУС"][rnd(0,6)]+"-"+String(i+1).padStart(2,"0"),x:rnd(0,1000),y:rnd(0,1000),type:t[0],visited:i===0,station:true,price:rnd(7,18),stock:rnd(20,90),pop:rnd(2,90)+" млн",goods:Object.fromEntries(Object.keys(GOODS).map(k=>[k,rnd(1,8)])),links:[]})}arr[0].type="factory";arr[0].price=8;arr[0].stock=100;for(let a of arr)a.links=arr.filter(b=>b!==a).map(b=>[b.id,Math.hypot(a.x-b.x,a.y-b.y)]).sort((x,y)=>x[1]-y[1]).slice(0,5).map(x=>x[0]);S={systems:arr,current:0,money:300,fuel:5,hull:100,ship:"wanderer",cargo:{},visited:1,mission:false,done:false,log:["Новая галактика создана.","Корабль «Странник» готов к вылету."]};target=null;save();start()}
-function start(){$("menu").classList.add("hidden");$("game").hidden=false;render();draw()}
-function log(s){S.log.unshift("› "+s);S.log=S.log.slice(0,20);$("log").innerHTML=S.log.map(x=>"<div>"+x+"</div>").join("");save()}
-function render(){let s=here(),v=V(),t=T(s);$("money").textContent=fmt(S.money);$("fuel").textContent=S.fuel+" / "+v[5];$("hull").textContent=S.hull+"%";$("cargoCount").textContent=cargo()+" / "+v[4];$("countSystems").textContent=S.systems.length+" систем";$("here").textContent=s.name;$("hereDesc").textContent=t[2];$("hereType").textContent="Тип: "+(s.visited?t[1]:"неизвестен");$("stationTitle").textContent="КОСМОПОРТ · "+s.name;$("marketHold").textContent=cargo()+" / "+v[4];$("fuelPrice").textContent=s.price+" cr";$("fuelStock").textContent=s.stock+" ед.";$("fuelCap").textContent=v[5]+" ед.";$("infoName").textContent=s.name;$("infoType").textContent=s.visited?t[1]:"Неизвестна";$("infoPop").textContent=s.visited?s.pop:"Неизвестно";$("infoEco").textContent=s.visited?t[3]:"Неизвестна";$("repairHull").textContent=S.hull+"%";$("repairCost").textContent=fmt((100-S.hull)*3)+" cr";$("repair").disabled=S.hull>=100||S.money<(100-S.hull)*3;$("missionStatus").textContent=S.done?"Контракт выполнен":S.mission?"Контракт активен":"Контракт не принят";$("accept").disabled=S.mission||S.done;$("shipArt").textContent=v[11];$("shipName").textContent="«"+v[1]+"»";$("shipClass").textContent=v[2];$("shipStats").innerHTML=[["Цена",fmt(v[3])+" cr"],["Трюм",v[4]+" ед."],["Топливный бак",v[5]+" ед."],["Расход",v[6]+" ед./прыжок"],["Скорость",v[7]+"/10"],["Корпус",S.hull+"%"],["Оружие",v[9]+"/10"],["Щиты",v[10]+"/10"]].map(x=>`<div class="data"><span>${x[0]}</span><b>${x[1]}</b></div>`).join("");renderGoods();renderShips();$("log").innerHTML=S.log.map(x=>"<div>"+x+"</div>").join("");renderTarget();
- $("shipHomeArt").textContent=v[11];
- $("nearbySystems").innerHTML=s.links.slice(0,4).map(id=>{let q=S.systems[id],dd=Math.ceil(Math.hypot(q.x-s.x,q.y-s.y)/90);return `<button class="nearby" data-near="${id}"><b>${q.name}</b><small>${q.visited?T(q)[1]:"Неисследованная система"} · ${dd} св. ед.</small></button>`}).join("");
- document.querySelectorAll("[data-near]").forEach(b=>b.onclick=()=>{target=+b.dataset.near;renderTarget();$("mapScreen").classList.remove("hidden");drawMap();});
- $("mapSystemCount").textContent=S.systems.length+" систем";
+(()=>{
+const canvas=document.getElementById('space'),ctx=canvas.getContext('2d'),game=document.getElementById('game');
+let w=0,h=0,dpr=1,angle=0,fuel=24,travel=0,sector=7,systems=[],stars=[],nebulae=[],toastTimer;
+const rand=(a,b)=>Math.random()*(b-a)+a;
+function resize(){dpr=Math.min(devicePixelRatio||1,2);w=game.clientWidth;h=game.clientHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.imageSmoothingEnabled=false;generate();draw()}
+function generate(){
+ stars=Array.from({length:190},()=>({x:rand(0,w),y:rand(0,h),r:rand(.5,1.8),a:rand(.25,1),p:rand(0,6)}));
+ nebulae=Array.from({length:13},()=>({x:rand(-40,w+40),y:rand(20,h*.82),r:rand(30,80),c:Math.random()<.7?'#a000e8':'#4c27bb',a:rand(.12,.27)}));
+ systems=Array.from({length:24},(_,i)=>({x:rand(18,w-18),y:rand(100,h*.78),type:Math.floor(rand(0,5)),name:['Эльтар','Вега-9','Криос','Немезис','Аркадия','Таргон','Орион'][i%7],seen:i<3}));
+ // ensure a visible route network around the flight axis
+ systems[0]={x:w*.54,y:h*.22,type:2,name:'Эльтар',seen:true};
+ systems[1]={x:w*.29,y:h*.39,type:1,name:'Вега-9',seen:true};
+ systems[2]={x:w*.73,y:h*.62,type:3,name:'Криос',seen:true};
+ systems[3]={x:w*.18,y:h*.72,type:0,name:'Немезис',seen:false};
 }
-function renderTarget(){let s=target===null?null:S.systems[target],d=s?Math.ceil(Math.hypot(s.x-here().x,s.y-here().y)/90):0,c=s?Math.max(V()[6],Math.ceil(d/3)):0;$("dest").textContent=s?s.name:"Цель не выбрана";$("destDesc").textContent=s?(s.visited?T(s)[2]:"Неизвестная система. Тип откроется после посещения."):"Выбери систему на карте.";$("dist").textContent="Дальность: "+(s?d+" св. ед.":"—");$("jumpFuel").textContent="Топливо: "+(s?c:"—");$("jump").disabled=!s||s.id===S.current||!here().links.includes(s.id)||S.fuel<c}
-function renderGoods(){let s=here();$("goods").innerHTML=Object.entries(GOODS).map(([id,g])=>{let price=Math.max(1,Math.round(g[1]*(s.type===T(s)[0]&&T(s)[4].includes(id)?.78:1.15)*(0.9+Math.random()*.2))),stock=s.goods[id]||0;return `<div class="good"><b>${g[0]}</b><p>Запас: ${stock}<br>Покупка: ${price} cr · продажа: ${Math.round(price*.7)} cr</p><button class="btn" data-buy="${id}" data-price="${price}" ${stock<1||cargo()>=V()[4]||S.money<price?"disabled":""}>КУПИТЬ</button></div>`}).join("");document.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>{let id=b.dataset.buy,p=+b.dataset.price;if(S.money<p||cargo()>=V()[4])return;S.money-=p;here().goods[id]--;S.cargo[id]=(S.cargo[id]||0)+1;log("Куплено: "+GOODS[id][0]);render()})}
-function renderShips(){let markup=SHIPS.map(s=>`<div class="ship-choice"><div><b>${s[11]} ${s[1]}</b><small>${s[2]} · трюм ${s[4]} · бак ${s[5]}</small></div><div style="text-align:right"><b>${S.ship===s[0]?"АКТИВЕН":fmt(s[3])+" cr"}</b>${S.ship!==s[0]?`<br><button class="btn" data-ship="${s[0]}" style="padding:5px 8px;margin-top:4px">ОБМЕНЯТЬ</button>`:""}</div></div>`).join("");$("shipChoices").innerHTML=markup;$("yard").innerHTML=markup;document.querySelectorAll("[data-ship]").forEach(b=>b.onclick=()=>{let n=SHIPS.find(s=>s[0]===b.dataset.ship),old=V(),cost=n[3]-Math.round(old[3]*.65);if(S.money<cost){log("Недостаточно средств для обмена.");return}if(cargo()>n[4]){log("Сначала освободи трюм.");return}S.money-=cost;S.ship=n[0];S.fuel=Math.min(S.fuel,n[5]);S.hull=100;log("Ты пересел на корабль «"+n[1]+"».");render()})}
-function refuel(q){let s=here(),v=V(),n=Math.min(q,v[5]-S.fuel,s.stock),price=s.price;if(S.money<price&&S.fuel<=v[6])price=Math.max(1,Math.min(price,S.money));let buy=Math.min(n,Math.floor(S.money/price));if(buy<1){log("Недостаточно кредитов. Продай груз или выполни контракт.");return}S.money-=buy*price;S.fuel+=buy;s.stock-=buy;log("Заправлено "+buy+" ед. по "+price+" cr.");render()}
-$("fuelOne").onclick=()=>refuel(1);$("fuelFull").onclick=()=>refuel(V()[5]-S.fuel);$("sell").onclick=()=>{let total=0;for(let [id,n] of Object.entries(S.cargo))total+=Math.round(GOODS[id][1]*.7)*n;if(!total){log("Трюм пуст.");return}S.money+=total;S.cargo={};log("Груз продан за "+fmt(total)+" cr.");render()};$("repair").onclick=()=>{let c=(100-S.hull)*3;if(S.money<c)return;S.money-=c;S.hull=100;log("Корабль отремонтирован.");render()};$("accept").onclick=()=>{S.mission=true;log("Контракт принят: доставить два товара в другую систему.");render()};
-function jump(){let s=S.systems[target],d=Math.ceil(Math.hypot(s.x-here().x,s.y-here().y)/90),c=Math.max(V()[6],Math.ceil(d/3));if(S.fuel<c)return;S.fuel-=c;S.current=s.id;if(!s.visited){s.visited=true;S.visited++;log("Открыта система "+s.name+": "+T(s)[1])}else log("Прибытие в "+s.name);if(S.mission&&!S.done&&cargo()>=2){S.money+=350;S.done=true;log("Контракт выполнен: +350 cr.")}if(s.stock<8)s.stock=rnd(20,45);target=null;render();draw();if(Math.random()<(s.type==="pirate"?.48:.10))setTimeout(battle,500)}
-$("jump").onclick=jump;$("openMap").onclick=()=>{$("mapScreen").classList.remove("hidden");$("mapSystemCount").textContent=S.systems.length+" систем";$("mapTargetName").textContent=target===null?"Выбери звёздную систему":S.systems[target].name;$("mapTargetInfo").textContent="Выбери доступную соседнюю систему для построения маршрута.";$("mapJump").disabled=target===null||target===S.current||!here().links.includes(target);drawMap()};
-$("closeMap").onclick=()=>{$("mapScreen").classList.add("hidden")};
-$("mapJump").onclick=()=>{jump();if(!$("battle").classList.contains("hidden"))return;$("mapScreen").classList.add("hidden")};
-
-function battle(){if(busy)return;busy=true;let enemy=100,player=S.hull,enemyPower=rnd(2,5),power=Math.max(1,V()[9]+rnd(0,2));$("battle").classList.remove("hidden");$("pBattleName").textContent=V()[1].toUpperCase();$("pHealth").style.width=player+"%";$("eHealth").style.width="100%";$("battleStatus").textContent="Автобой! Корабли обмениваются залпами.";let round=0;let timer=setInterval(()=>{round++;enemy=Math.max(0,enemy-rnd(8,16)*power/3);if(enemy>0)player=Math.max(0,player-rnd(5,13)*enemyPower/4/(1+V()[10]*.16));$("pHealth").style.width=player+"%";$("eHealth").style.width=enemy+"%";$("pHpText").textContent="Корпус "+Math.round(player)+"%";$("eHpText").textContent="Корпус "+Math.round(enemy)+"%";if(enemy<=0||player<=0||round>=8){clearInterval(timer);S.hull=Math.max(1,Math.round(player));if(enemy<=0){let reward=rnd(70,150);S.money+=reward;$("battleStatus").textContent="ПОБЕДА! Пират отступил. Награда "+reward+" cr."}else if(player<=0){S.hull=25;let fine=Math.min(S.money,rnd(20,60));S.money-=fine;$("battleStatus").textContent="ТЯЖЁЛЫЕ ПОВРЕЖДЕНИЯ. Штраф "+fine+" cr."}else $("battleStatus").textContent="Противник отступил.";save();$("battleDone").disabled=false}},900)}
-$("battleDone").onclick=()=>{$("battle").classList.add("hidden");busy=false;render()};
-document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id==="v-"+b.dataset.view));if(b.dataset.view==="galaxy")draw();if(b.dataset.view==="station")render()});
-document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-page]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".station-page").forEach(x=>x.classList.toggle("active",x.id==="p-"+b.dataset.page))});
-function draw(){drawMap()}
-function drawMap(){let c=$("map"),r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);c.width=r.width*d;c.height=r.height*d;let x=c.getContext("2d");x.scale(d,d);let w=r.width,h=r.height;x.fillStyle="#081323";x.fillRect(0,0,w,h);for(let i=0;i<85;i++){let a=(i*71.3)%w,b=(i*43.7)%h;x.fillStyle=`rgba(220,235,255,${.2+(i%4)*.15})`;x.fillRect(a,b,1,1)}let cur=here(),near=S.systems.filter(s=>s.id===cur.id||cur.links.includes(s.id)),minX=Math.min(...near.map(s=>s.x)),maxX=Math.max(...near.map(s=>s.x)),minY=Math.min(...near.map(s=>s.y)),maxY=Math.max(...near.map(s=>s.y)),sx=a=>25+(a-minX)/Math.max(1,maxX-minX)*(w-50),sy=a=>25+(a-minY)/Math.max(1,maxY)*(h-50);x.strokeStyle="#41658688";for(let id of cur.links){let s=S.systems[id];x.beginPath();x.moveTo(sx(cur.x),sy(cur.y));x.lineTo(sx(s.x),sy(s.y));x.stroke()}near.forEach(s=>{let a=sx(s.x),b=sy(s.y);x.beginPath();x.arc(a,b,s.id===cur.id?7:5,0,7);x.fillStyle=s.id===cur.id?"#f3c477":s.visited?"#65e8f2":"#8794b8";x.shadowColor=x.fillStyle;x.shadowBlur=10;x.fill();x.shadowBlur=0;x.fillStyle="#dcecff";x.font="9px system-ui";x.textAlign="center";x.fillText(s.id===cur.id?"ВЫ ЗДЕСЬ":s.visited?s.name:"НЕИЗВЕСТНО",a,b+17)});c.onclick=e=>{let r=c.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top,best=null,bd=20;near.forEach(s=>{let z=Math.hypot(sx(s.x)-px,sy(s.y)-py);if(z<bd){best=s;bd=z}});if(best){target=best.id;renderTarget();$("mapTargetName").textContent=best.name;$("mapTargetInfo").textContent=best.visited?T(best)[2]:"Неизвестная система · специализация откроется после посещения";$("mapJump").disabled=best.id===S.current||!here().links.includes(best.id)||S.fuel<Math.max(V()[6],Math.ceil(Math.ceil(Math.hypot(best.x-here().x,best.y-here().y)/90)/3));drawMap()}}}
-$("newGame").onclick=()=>{if(localStorage.getItem(KEY)&&!confirm("Создать новую галактику вместо текущего сохранения?"))return;newGame()};$("continue").onclick=()=>{try{S=JSON.parse(localStorage.getItem(KEY));if(S?.systems)start();else alert("Сохранение не найдено.")}catch(e){alert("Сохранение не найдено.")}};$("saves").onclick=()=>alert(localStorage.getItem(KEY)?"Найдено одно сохранение. Нажми «Продолжить».":"Сохранений пока нет.");$("settings").onclick=()=>alert("Настройки звука и графики добавим позже.");$("continue").disabled=!localStorage.getItem(KEY);
-window.addEventListener("resize",()=>{if(!$("game").hidden){if(!$("mapScreen").classList.contains("hidden"))drawMap();}});
-</script></body></html>
+function line(x1,y1,x2,y2){ctx.beginPath();ctx.setLineDash([3,7]);ctx.strokeStyle='rgba(95,215,255,.38)';ctx.lineWidth=1.4;ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([])}
+function draw(){
+ ctx.clearRect(0,0,w,h);
+ let bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,'#08051e');bg.addColorStop(.55,'#12052f');bg.addColorStop(1,'#05091d');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+ // nebulae soft pixel-like clouds
+ nebulae.forEach(n=>{ctx.save();ctx.globalAlpha=n.a;for(let k=0;k<4;k++){ctx.fillStyle=n.c;ctx.beginPath();ctx.arc(n.x+Math.cos(k*1.7)*n.r*.35,n.y+Math.sin(k*1.9)*n.r*.25,n.r*(.65+(.1*k)),0,Math.PI*2);ctx.fill()}ctx.restore()});
+ stars.forEach(s=>{let tw=.55+.45*Math.sin(Date.now()/800+s.p);ctx.globalAlpha=s.a*tw;ctx.fillStyle='#fff4dc';ctx.fillRect(Math.round(s.x),Math.round(s.y),s.r>1.3?2:1,s.r>1.3?2:1);if(s.r>1.5){ctx.fillRect(s.x-3,s.y,7,1);ctx.fillRect(s.x,s.y-3,1,7)}});ctx.globalAlpha=1;
+ // routes
+ const order=[systems[0],systems[1],systems[3],systems[2],systems[0]];
+ for(let i=0;i<order.length-1;i++)line(order[i].x,order[i].y,order[i+1].x,order[i+1].y);
+ // additional links
+ for(let i=4;i<systems.length;i++){let a=systems[i],b=systems[Math.floor(rand(0,4))];if(i%2===0)line(a.x,a.y,b.x,b.y)}
+ // systems: pixel planets with atmospheric halos, small moons and orbital pixels
+ systems.forEach((s,i)=>{
+   const colors=['#e9f3ff','#ff9d35','#42ef9c','#55dfff','#d66cff'];
+   const c=colors[s.type], r=10+(i%3)*2;
+   ctx.save();ctx.shadowBlur=13;ctx.shadowColor=c;
+   ctx.fillStyle=c+'33';ctx.beginPath();ctx.arc(s.x,s.y,r+8,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+   // blocky planet silhouette
+   ctx.fillStyle='#17102e';
+   ctx.fillRect(Math.round(s.x-r),Math.round(s.y-r+3),r*2,r*2-6);
+   ctx.fillRect(Math.round(s.x-r+3),Math.round(s.y-r),r*2-6,r*2);
+   ctx.fillStyle=c;
+   ctx.fillRect(Math.round(s.x-r+3),Math.round(s.y-r+3),r*2-6,r*2-6);
+   ctx.fillStyle='rgba(255,255,255,.55)';
+   ctx.fillRect(Math.round(s.x-r+5),Math.round(s.y-r+5),Math.max(3,r*.55),3);
+   ctx.fillStyle='rgba(8,8,35,.4)';
+   ctx.fillRect(Math.round(s.x+1),Math.round(s.y+2),Math.max(3,r*.6),Math.max(3,r*.5));
+   ctx.fillStyle='#fff';
+   ctx.fillRect(Math.round(s.x-r-2),Math.round(s.y),3,3);
+   ctx.fillRect(Math.round(s.x+r),Math.round(s.y-r+2),3,3);
+   // orbit ring
+   ctx.strokeStyle=s.seen?'rgba(75,235,255,.62)':'rgba(255,190,85,.55)';
+   ctx.lineWidth=1;ctx.setLineDash([2,4]);ctx.beginPath();ctx.ellipse(s.x,s.y,r+8,r+4,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+   ctx.restore();
+ });
+ // forward direction indicator
+ ctx.save();ctx.translate(w/2,h*.48);ctx.rotate(angle);ctx.strokeStyle='rgba(69,237,255,.18)';ctx.setLineDash([4,7]);ctx.beginPath();ctx.moveTo(0,-52);ctx.lineTo(0,-h*.35);ctx.stroke();ctx.restore();
+ requestAnimationFrame(draw);
+}
+function updateShip(){document.querySelector('#ship svg').style.transform=`rotate(${angle}rad)`;document.querySelector('.trail').style.transform=`translateX(-50%) rotate(${angle}rad)`}
+function showToast(t){let el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),1300)}
+function turn(dir){angle+=dir*.22;updateShip()}
+function move(){if(fuel<=0){showToast('ТОПЛИВО ЗАКОНЧИЛОСЬ — НУЖНА ЗАПРАВКА');return}fuel--;travel++;let dx=Math.sin(angle),dy=-Math.cos(angle);systems.forEach(s=>{s.x-=dx*12;s.y-=dy*12});if(travel%5===0){sector++;systems.push({x:rand(20,w-20),y:rand(110,h*.78),type:Math.floor(rand(0,5)),name:'Система '+(travel+10),seen:false});if(systems.length>32)systems.shift();showToast('НОВЫЙ УЧАСТОК ГАЛАКТИКИ');}document.getElementById('fuel').textContent=fuel;document.getElementById('coords').textContent=`СЕКТОР ${String(sector).padStart(2,'0')} : ${String(travel+14).padStart(3,'0')}`;let nearest=systems.reduce((a,b)=>Math.hypot(b.x-w/2,b.y-h*.48)<Math.hypot(a.x-w/2,a.y-h*.48)?b:a,systems[0]);document.getElementById('nearby').textContent='БЛИЖАЙШАЯ СИСТЕМА: '+nearest.name;}
+document.getElementById('left').addEventListener('click',()=>turn(-1));document.getElementById('right').addEventListener('click',()=>turn(1));document.getElementById('forward').addEventListener('click',move);
+let keys={};window.addEventListener('keydown',e=>{if(e.repeat)return;if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')turn(-1);if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')turn(1);if(e.key==='ArrowUp'||e.key==='w'||e.key===' ')move()});
+window.addEventListener('resize',resize);resize();updateShip();
+})();
+</script>
+</body></html>
