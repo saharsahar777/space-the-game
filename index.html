@@ -10,7 +10,6 @@
 canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
 .ship{position:absolute;left:50%;top:48%;width:0;height:0;transform:translate(-50%,-50%);z-index:4;filter:drop-shadow(0 0 8px #ff315d);pointer-events:none}
 .ship svg{width:58px;height:80px;overflow:visible;transform-origin:50% 50%}
-.ship .trail{position:absolute;left:50%;top:55px;transform:translateX(-50%);width:18px;height:44px;background:linear-gradient(#ff4b89aa,transparent);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);filter:blur(3px);opacity:.3;transition:opacity .12s}
 .controlbar{position:absolute;left:0;right:0;bottom:max(22px,env(safe-area-inset-bottom));display:flex;justify-content:center;align-items:center;gap:clamp(22px,9vw,48px);z-index:6}
 .ctrl{width:62px;height:62px;border-radius:50%;border:2px solid #a5faff;background:radial-gradient(circle at 35% 25%,#226f83,#09253c 70%);color:#dfffff;box-shadow:0 0 15px #21dfff66,inset 0 0 12px #36f5ff33;display:grid;place-items:center;font-size:25px;font-weight:900;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .ctrl.forward{width:76px;height:76px;border-color:#7dffe1;background:radial-gradient(circle at 35% 25%,#14c9a1,#00644f 70%);box-shadow:0 0 22px #00ffc477,inset 0 0 14px #caffef55;font-size:30px}
@@ -22,7 +21,6 @@ canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelate
 <div id="game">
 <canvas id="space"></canvas>
 <div class="ship" id="ship">
- <div class="trail"></div>
  <svg viewBox="0 0 64 88" shape-rendering="crispEdges" aria-label="Пиксельный корабль игрока">
   <g stroke="#17142c" stroke-width="2" stroke-linejoin="miter">
    <path fill="#9bff42" d="M8 42h8V25h5v-8h5v18h-5v20h-8v-7H8zM56 42h-8V25h-5v-8h-5v18h5v20h8v-7h5z"/>
@@ -55,14 +53,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelate
   let height = 0;
   let pixelRatio = 1;
   let heading = 0;
-  let velocityX = 0;
-  let velocityY = 0;
-  let previousFrame = 0;
-
-  const turnStep = 0.16;
-  const acceleration = 0.95;
-  const maximumSpeed = 3.2;
-  const spaceDrag = 0.992;
+  let fuel = 24;
 
   let stars = [];
   let nebulae = [];
@@ -89,29 +80,20 @@ canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelate
 
     systems = [];
 
-    for (let index = 0; index < 12; index++) {
-      let x;
-      let y;
-      let attempts = 0;
+    const positions = [
+      [0.16, 0.18],
+      [0.83, 0.22],
+      [0.18, 0.76],
+      [0.84, 0.78]
+    ];
 
-      do {
-        x = random(24, width - 24);
-        y = random(35, height * 0.76);
-        attempts++;
-      } while (
-        attempts < 100 &&
-        (
-          Math.hypot(x - width / 2, y - height * 0.48) < Math.min(145, width * 0.36) ||
-          systems.some(system => Math.hypot(system.x - x, system.y - y) < Math.min(125, width * 0.31))
-        )
-      );
-
+    positions.forEach(([x, y], index) => {
       systems.push({
-        x,
-        y,
+        x: width * x,
+        y: height * y,
         type: index % 5
       });
-    }
+    });
   }
 
   function resize() {
@@ -174,37 +156,12 @@ canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelate
     ctx.globalAlpha = 1;
   }
 
-  function drawRoutes() {
-    if (systems.length < 4) return;
-
-    const route = [systems[0], systems[1], systems[3], systems[2], systems[0]];
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.setLineDash([3, 7]);
-    ctx.strokeStyle = 'rgba(95,215,255,0.38)';
-    ctx.lineWidth = 1.4;
-
-    for (let index = 0; index < route.length - 1; index++) {
-      ctx.moveTo(route[index].x, route[index].y);
-      ctx.lineTo(route[index + 1].x, route[index + 1].y);
-    }
-
-    for (let index = 4; index < systems.length; index += 2) {
-      ctx.moveTo(systems[index].x, systems[index].y);
-      ctx.lineTo(systems[index - 2].x, systems[index - 2].y);
-    }
-
-    ctx.stroke();
-    ctx.restore();
-  }
-
   function drawSystems() {
     const colors = ['#e9f3ff', '#ff9d35', '#42ef9c', '#55dfff', '#d66cff'];
 
     systems.forEach((system, index) => {
       const color = colors[system.type];
-      const size = 5 + index % 3;
+      const size = 25 + (index % 3) * 5;
 
       ctx.save();
       ctx.shadowBlur = 13;
@@ -243,13 +200,11 @@ canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelate
     drawBackground();
     drawNebulae();
     drawStars(time);
-    drawRoutes();
     drawSystems();
   }
 
   function updateShip() {
     shipArt.style.transform = `rotate(${heading}rad)`;
-    engineTrail.style.transform = `translateX(-50%) rotate(${heading}rad)`;
   }
 
   function turn(direction) {
@@ -258,47 +213,26 @@ canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelate
   }
 
   function thrust() {
-    velocityX += Math.sin(heading) * acceleration;
-    velocityY -= Math.cos(heading) * acceleration;
+    if (fuel <= 0) return;
 
-    const speed = Math.hypot(velocityX, velocityY);
+    fuel -= 1;
 
-    if (speed > maximumSpeed) {
-      velocityX = velocityX / speed * maximumSpeed;
-      velocityY = velocityY / speed * maximumSpeed;
-    }
-
-    engineTrail.style.opacity = '1';
-    window.clearTimeout(thrust.trailTimer);
-    thrust.trailTimer = window.setTimeout(() => {
-      engineTrail.style.opacity = '0.3';
-    }, 180);
-  }
-
-  function updateFlight(deltaTime) {
-    const drag = Math.pow(spaceDrag, deltaTime);
-    velocityX *= drag;
-    velocityY *= drag;
-
-    const movementX = velocityX * deltaTime;
-    const movementY = velocityY * deltaTime;
+    const stepDistance = 42;
+    const movementX = Math.sin(heading) * stepDistance;
+    const movementY = -Math.cos(heading) * stepDistance;
 
     systems.forEach(system => {
       system.x -= movementX;
       system.y -= movementY;
 
-      if (system.x < -45) system.x = width + 45;
-      if (system.x > width + 45) system.x = -45;
-      if (system.y < -45) system.y = height * 0.78;
-      if (system.y > height * 0.82) system.y = -35;
+      if (system.x < -70) system.x = width + 70;
+      if (system.x > width + 70) system.x = -70;
+      if (system.y < -70) system.y = height + 70;
+      if (system.y > height + 70) system.y = -70;
     });
   }
 
   function frame(time) {
-    const deltaTime = Math.min(2, (time - (previousFrame || time)) / 16.67);
-    previousFrame = time;
-
-    updateFlight(deltaTime);
     render(time);
     requestAnimationFrame(frame);
   }
