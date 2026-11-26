@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#07111f"><title>SPACE — Просторы Вселенной</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1c2d;--panel2:#10263b;--line:#23445e;--cyan:#5ee7ef;--gold:#f4bd65;--muted:#91a9bd;--text:#eaf5ff;--green:#70e0ae;--red:#ff7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#173c57 0,#07111f 55%);color:var(--text);font:14px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+.app{max-width:1120px;margin:auto;padding:16px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.brand{font-weight:900;letter-spacing:.18em;font-size:22px}.brand span{color:var(--cyan)}.sub{color:var(--muted);font-size:11px;letter-spacing:.13em}
+.pill{border:1px solid var(--line);background:#0b1b2b;padding:7px 11px;border-radius:99px;color:var(--muted);font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}.stat,.panel{background:linear-gradient(145deg,#10253a,#0a1726);border:1px solid var(--line);border-radius:13px}.stat{padding:10px 12px}.stat small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.stat b{font-size:18px;color:var(--gold)}
+.layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,.85fr);gap:12px}.panel{padding:14px}.panelhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.panelhead h2{font-size:13px;letter-spacing:.12em;margin:0}.hint{color:var(--muted);font-size:11px}
+.mapwrap{background:radial-gradient(ellipse at center,#102e45 0,#071522 68%);border:1px solid #1d3e57;border-radius:10px;overflow:hidden}
+svg#galaxy{width:100%;height:auto;display:block;min-height:310px}.route{stroke:#37647e;stroke-width:1.4;stroke-dasharray:5 7;opacity:.8}.route.active{stroke:var(--cyan);stroke-width:2.5;filter:drop-shadow(0 0 5px #5ee7ef)}
+.system{cursor:pointer;outline:none;touch-action:manipulation}.system .halo{fill:#5ee7ef;opacity:0;transition:.2s}.system.selected .halo,.system:hover .halo{opacity:.13}.system .planet{stroke:#a7f5fa;stroke-width:1.2;filter:drop-shadow(0 0 7px #45d9ec)}.system text{fill:#dff8ff;font-size:11px;font-weight:700;text-anchor:middle;paint-order:stroke;stroke:#071522;stroke-width:3px;stroke-linejoin:round}.system .meta{fill:#8aaabd;font-size:8px;font-weight:500}.ship{filter:drop-shadow(0 0 5px #f4bd65)}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.section{background:#0a1928;border:1px solid #1c3a51;border-radius:10px;padding:11px}.section h3{margin:0 0 8px;font-size:12px;color:var(--cyan);letter-spacing:.08em}.rowitem{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #1b3448}.rowitem:last-child{border:0}.rowitem small{display:block;color:var(--muted);font-size:10px}.btn{border:1px solid #36738a;background:linear-gradient(180deg,#16445b,#103044);color:#e9fcff;border-radius:8px;padding:8px 10px;font-weight:700;font-size:11px;cursor:pointer}.btn:hover{border-color:var(--cyan)}.btn,.tab{touch-action:manipulation;-webkit-tap-highlight-color:transparent}.btn.gold{border-color:#8d6735;background:linear-gradient(180deg,#624821,#392b1a);color:#ffe2a8}.btn:disabled{opacity:.35;cursor:not-allowed}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tab{padding:7px 10px;border-radius:8px;background:#0a1928;border:1px solid var(--line);color:var(--muted);font-size:11px;cursor:pointer}.tab.active{color:var(--cyan);border-color:#3e9eaa;background:#102c3d}
+.log{max-height:135px;overflow:auto;color:#a9bfd0;font-size:11px}.log div{padding:5px 0;border-bottom:1px solid #1a3042}.notice{color:var(--gold);font-size:11px;margin-top:8px}.footer{color:#607d93;font-size:10px;text-align:center;margin:14px}
+
+/* Адаптация под смартфоны */
+@media(max-width:760px){
+  html,body{width:100%;overflow-x:hidden}
+  body{font-size:14px}
+  .app{width:100%;max-width:560px;margin:0 auto;padding:12px 10px 24px}
+  .top{align-items:center;gap:8px;margin-bottom:12px}
+  .brand{font-size:20px;letter-spacing:.14em}
+  .sub{font-size:9px;letter-spacing:.08em;max-width:220px}
+  .pill{font-size:10px;padding:6px 8px;white-space:nowrap}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:10px}
+  .stat{padding:9px 10px;border-radius:11px;min-width:0}
+  .stat small{font-size:9px;letter-spacing:.06em}
+  .stat b{font-size:18px}
+  .layout{display:flex;flex-direction:column;gap:10px}
+  .panel{padding:11px;border-radius:12px;min-width:0}
+  .panelhead{gap:8px;align-items:flex-start}
+  .panelhead h2{font-size:12px;letter-spacing:.08em}
+  .hint{font-size:10px;text-align:right}
+  .mapwrap{width:100%;border-radius:9px}
+  svg#galaxy{width:100%;height:auto;min-height:0;display:block}
+  .system text{font-size:17px;stroke-width:4px}
+  .system .meta{font-size:12px}
+  .columns{grid-template-columns:1fr;gap:8px;margin-top:10px}
+  .section{padding:10px}
+  .section h3{font-size:11px}
+  .rowitem{gap:7px;padding:9px 0;min-width:0}
+  .rowitem>span{min-width:0;flex:1}
+  .rowitem small{font-size:10px;line-height:1.35}
+  .btn{min-height:38px;padding:9px 11px;font-size:10px;white-space:nowrap}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  .tab{padding:9px 4px;font-size:10px;text-align:center}
+  #marketView .rowitem{align-items:center}
+  #marketView .rowitem .btn{flex-shrink:0}
+  #missionsView .btn,#duelView .btn{width:100%;margin-top:5px}
+  .log{max-height:150px;font-size:11px}
+  .notice{font-size:10px;line-height:1.45}
+  .footer{font-size:9px;line-height:1.5;margin:12px 4px 0}
+}
+@media(max-width:380px){
+  .app{padding:9px 8px 20px}
+  .top{align-items:flex-start}
+  .brand{font-size:18px}
+  .sub{font-size:8px}
+  .pill{font-size:9px;padding:5px 6px}
+  .panel{padding:9px}
+  .system text{font-size:19px}
+  .system .meta{font-size:13px}
+  .stat b{font-size:17px}
+  .rowitem{font-size:12px}
+  .btn{padding:8px 8px;font-size:9px}
+}
+
+</style></head>
+<body><div class="app">
+<header class="top"><div><div class="brand"><span>✦</span> SPACE</div><div class="sub">ПРОСТОРЫ ВСЕЛЕННОЙ · ПИЛОТНЫЙ ПРОТОТИП</div></div><div class="pill" id="turnLabel">ХОД 01 · ПИЛОТ 1</div></header>
+<div class="stats">
+ <div class="stat"><small>Кредиты · Соларис</small><b id="money">1 200</b></div>
+ <div class="stat"><small>Атомное топливо</small><b id="fuel">8</b></div>
+ <div class="stat"><small>Плазменные щиты</small><b id="shields">2</b></div>
+ <div class="stat"><small>Трюм</small><b id="cargo">0 / 10</b></div>
+</div>
+<div class="layout">
+ <main class="panel">
+  <div class="panelhead"><h2>КАРТА ЗВЁЗДНЫХ СИСТЕМ</h2><span class="hint">Выбери пункт назначения</span></div>
+  <div class="mapwrap">
+  <svg id="galaxy" viewBox="0 0 700 420" role="img" aria-label="Карта шести звёздных систем">
+   <defs>
+    <radialGradient id="spaceGlow"><stop stop-color="#1b526c" stop-opacity=".5"/><stop offset="1" stop-color="#071522" stop-opacity="0"/></radialGradient>
+    <radialGradient id="planetA"><stop stop-color="#d5ffff"/><stop offset=".35" stop-color="#55c9d9"/><stop offset="1" stop-color="#17607c"/></radialGradient>
+    <radialGradient id="planetB"><stop stop-color="#fff0c5"/><stop offset=".4" stop-color="#d99a55"/><stop offset="1" stop-color="#75432d"/></radialGradient>
+    <radialGradient id="planetC"><stop stop-color="#e5d8ff"/><stop offset=".4" stop-color="#947bd5"/><stop offset="1" stop-color="#40346f"/></radialGradient>
+   </defs>
+   <rect width="700" height="420" fill="url(#spaceGlow)"/>
+   <g fill="#a7d8e8" opacity=".6"><circle cx="42" cy="42" r="1"/><circle cx="120" cy="110" r="1.2"/><circle cx="210" cy="35" r=".8"/><circle cx="310" cy="95" r="1"/><circle cx="410" cy="32" r="1.1"/><circle cx="565" cy="75" r=".8"/><circle cx="650" cy="35" r="1"/><circle cx="80" cy="330" r="1"/><circle cx="220" cy="370" r=".8"/><circle cx="365" cy="325" r="1"/><circle cx="520" cy="370" r="1"/><circle cx="650" cy="290" r="1.1"/></g>
+   <g id="routes">
+    <path class="route" d="M115 105 L300 75 L520 115 L585 285 L375 340 L145 285 Z"/>
+    <path class="route" d="M115 105 L375 340 M300 75 L585 285 M520 115 L145 285"/>
+   </g>
+   <g id="nodes">
+    <g class="system selected" data-id="0" transform="translate(115 105)"><circle class="halo" r="43"/><circle class="planet" r="18" fill="url(#planetA)"/><path d="M-26 4 Q0 -10 27 4" fill="none" stroke="#75e9f0" opacity=".7"/><text y="43">СОЛАРИС</text><text class="meta" y="56">Торговый центр</text></g>
+    <g class="system" data-id="1" transform="translate(300 75)"><circle class="halo" r="43"/><circle class="planet" r="16" fill="url(#planetB)"/><path d="M-25 0 Q0 -8 25 0" fill="none" stroke="#f4c17a" stroke-width="3"/><text y="40">ВУЛКАН</text><text class="meta" y="53">Металлургия</text></g>
+    <g class="system" data-id="2" transform="translate(520 115)"><circle class="halo" r="43"/><circle class="planet" r="18" fill="url(#planetC)"/><circle r="25" fill="none" stroke="#a99be9" stroke-width="3" transform="rotate(-18) scale(1 .35)"/><text y="45">ЭЛИЗИУМ</text><text class="meta" y="58">Наука и технологии</text></g>
+    <g class="system" data-id="3" transform="translate(585 285)"><circle class="halo" r="43"/><circle class="planet" r="17" fill="#4fbd9e"/><path d="M-12 -8 Q0 -20 13 -6 Q5 4 15 10 Q-2 20 -12 6Z" fill="#b3edbd"/><text y="43">НЕБУЛА</text><text class="meta" y="56">Редкие ресурсы</text></g>
+    <g class="system" data-id="4" transform="translate(375 340)"><circle class="halo" r="43"/><circle class="planet" r="18" fill="#6b9dc7"/><path d="M-13 -8 Q0 -17 13 -8 L8 2 L-7 7Z" fill="#d2e7f1"/><text y="44">ТАРТАР</text><text class="meta" y="57">Военный сектор</text></g>
+    <g class="system" data-id="5" transform="translate(145 285)"><circle class="halo" r="43"/><circle class="planet" r="18" fill="#c17c64"/><path d="M-18 0 Q0 -5 18 0" stroke="#f1c29d" stroke-width="5" fill="none"/><text y="44">АРКАДИЯ</text><text class="meta" y="57">Агроколонии</text></g>
+   </g>
+   <g id="playerShip" class="ship" transform="translate(115 105)"><path d="M0 -30 L7 -13 L0 -17 L-7 -13Z" fill="#ffe0a0" stroke="#fff0c5"/><path d="M0 -17 L0 -8" stroke="#ffbd55" stroke-width="2"/></g>
+   <g transform="translate(350 200)" opacity=".85"><circle r="22" fill="#03070d"/><circle r="30" fill="none" stroke="#8c68dc" stroke-width="5" opacity=".8"/><circle r="39" fill="none" stroke="#4e9bc1" stroke-width="1" stroke-dasharray="3 5"/><text y="54" text-anchor="middle" fill="#b6a6e8" font-size="9">АНОМАЛИЯ</text></g>
+  </svg></div>
+  <div class="notice" id="systemInfo">СОЛАРИС · Центральная торговая система. Здесь удобно начать путь.</div>
+  <div class="columns">
+   <div class="section"><h3>ТВОЙ КОРАБЛЬ</h3><div class="rowitem"><span>«Странник»<small>Лёгкий торговый фрегат</small></span><b>◆</b></div><div class="rowitem"><span>Корпус</span><b>100%</b></div><div class="rowitem"><span>Вместимость</span><b>10 ед.</b></div></div>
+   <div class="section"><h3>НАВИГАЦИЯ</h3><div class="rowitem"><span>Прыжок в систему</span><b id="jumpCost">2 топлива</b></div><button class="btn gold" id="jumpBtn" style="width:100%">СОВЕРШИТЬ ПРЫЖОК</button></div>
+  </div>
+ </main>
+ <aside class="panel">
+  <div class="panelhead"><h2>ТОРГОВЫЙ ТЕРМИНАЛ</h2><span class="hint">Рынок системы</span></div>
+  <div class="tabs"><button class="tab active" data-tab="market">Рынок</button><button class="tab" data-tab="missions">Контракты</button><button class="tab" data-tab="duel">Дуэль</button></div>
+  <div id="marketView">
+   <div class="rowitem"><span>Титановые сплавы<small>Цена покупки: 120 cr · продажа: 90 cr</small></span><button class="btn" data-buy="titan">КУПИТЬ</button></div>
+   <div class="rowitem"><span>Криокристаллы<small>Цена покупки: 180 cr · продажа: 135 cr</small></span><button class="btn" data-buy="crystal">КУПИТЬ</button></div>
+   <div class="rowitem"><span>Синтез-пайки<small>Цена покупки: 60 cr · продажа: 45 cr</small></span><button class="btn" data-buy="food">КУПИТЬ</button></div>
+   <div class="rowitem"><span>Продать весь груз<small>Получить кредиты за трюм</small></span><button class="btn gold" id="sellBtn">ПРОДАТЬ</button></div>
+  </div>
+  <div id="missionsView" hidden><p class="hint">Доставка 2 единиц груза в соседнюю систему.</p><div class="rowitem"><span>Награда<small>За выполнение контракта</small></span><b style="color:var(--gold)">+350 cr</b></div><button class="btn gold" id="missionBtn">ВЗЯТЬ КОНТРАКТ</button></div>
+  <div id="duelView" hidden><p class="hint">Встреча с другим пилотом. Для демонстрации доступен учебный бой.</p><div class="rowitem"><span>Учебный противник<small>Плазменный перехватчик</small></span><b>◆</b></div><button class="btn" id="battleBtn">НАЧАТЬ БОЙ</button></div>
+  <div style="margin-top:14px"><div class="panelhead"><h2>БОРТОВОЙ ЖУРНАЛ</h2><span class="hint">События</span></div><div class="log" id="log"><div>Система запущена. Добро пожаловать, пилот.</div><div>Вы получили корабль «Странник».</div></div></div>
+  <div class="notice">Демо-режим: прогресс хранится в этом браузере. Совместная игра с другого телефона подключается через сервер на следующем этапе.</div>
+ </aside>
+</div><div class="footer">SPACE · ПРОТОТИП 0.1 · НЕОФИЦИАЛЬНАЯ ЦИФРОВАЯ КОНЦЕПЦИЯ</div>
+</div>
+<script>
+const systems=[
+{name:"СОЛАРИС",desc:"Центральная торговая система. Здесь удобно начать путь.",x:115,y:105},
+{name:"ВУЛКАН",desc:"Промышленный сектор. Титановые сплавы здесь особенно востребованы.",x:300,y:75},
+{name:"ЭЛИЗИУМ",desc:"Научный мир. Здесь ценят криокристаллы и редкие технологии.",x:520,y:115},
+{name:"НЕБУЛА",desc:"Пограничная система с редкими ресурсами и нестабильными маршрутами.",x:585,y:285},
+{name:"ТАРТАР",desc:"Военный сектор. Здесь можно найти оружие и защитные модули.",x:375,y:340},
+{name:"АРКАДИЯ",desc:"Система агроколоний. Главный поставщик продовольствия.",x:145,y:285}
+];
+const goods={titan:{name:"Титановые сплавы",buy:120,sell:90},crystal:{name:"Криокристаллы",buy:180,sell:135},food:{name:"Синтез-пайки",buy:60,sell:45}};
+let state=JSON.parse(localStorage.getItem("space-demo")||"null")||{money:1200,fuel:8,shields:2,cargo:{},system:0,turn:1,mission:false};
+let selected=1;
+function save(){localStorage.setItem("space-demo",JSON.stringify(state));render()}
+function count(){return Object.values(state.cargo).reduce((a,b)=>a+b,0)}
+function log(s){let el=document.getElementById("log");let d=document.createElement("div");d.textContent="› "+s;el.prepend(d)}
+function render(){
+ document.getElementById("money").textContent=state.money.toLocaleString("ru-RU");
+ document.getElementById("fuel").textContent=state.fuel;
+ document.getElementById("shields").textContent=state.shields;
+ document.getElementById("cargo").textContent=count()+" / 10";
+ document.getElementById("turnLabel").textContent="ХОД "+String(state.turn).padStart(2,"0")+" · ПИЛОТ 1";
+ document.getElementById("systemInfo").textContent=systems[state.system].name+" · "+systems[state.system].desc;
+ document.querySelectorAll(".system").forEach((n,i)=>n.classList.toggle("selected",i===selected));
+ let s=systems[state.system];document.getElementById("playerShip").setAttribute("transform",`translate(${s.x} ${s.y})`);
+ document.getElementById("jumpBtn").disabled=selected===state.system||state.fuel<2;
+ document.getElementById("jumpCost").textContent=selected===state.system?"Вы здесь":"2 топлива";
+}
+document.querySelectorAll(".system").forEach(n=>n.addEventListener("click",()=>{selected=+n.dataset.id;render()}));
+document.getElementById("jumpBtn").onclick=()=>{if(selected===state.system||state.fuel<2)return;state.fuel-=2;state.system=selected;state.turn++;log("Прыжок завершён. Прибытие: "+systems[state.system].name+".");if(Math.random()<.22){state.fuel=Math.max(0,state.fuel-1);log("Метеоритный поток: потеряно 1 топливо.");}save()};
+document.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>{let g=goods[b.dataset.buy];if(count()>=10){log("Трюм заполнен.");return}if(state.money<g.buy){log("Недостаточно кредитов.");return}state.money-=g.buy;state.cargo[b.dataset.buy]=(state.cargo[b.dataset.buy]||0)+1;log("Куплено: "+g.name+".");save()});
+document.getElementById("sellBtn").onclick=()=>{let total=0;for(let [id,n] of Object.entries(state.cargo)){total+=goods[id].sell*n}if(!total){log("В трюме нет товаров.");return}state.money+=total;state.cargo={};log("Груз продан за "+total+" кредитов.");save()};
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));["market","missions","duel"].forEach(x=>document.getElementById(x+"View").hidden=x!==b.dataset.tab)});
+document.getElementById("missionBtn").onclick=()=>{if(state.mission){log("Контракт уже взят.");return}state.mission=true;log("Контракт принят: посетите другую систему и вернитесь за наградой.");save()};
+document.getElementById("battleBtn").onclick=()=>{if(state.shields<1){log("Нет плазменных щитов. Бой отменён.");return}state.shields--;let win=Math.random()>.35;if(win){state.money+=220;log("Победа! Получено 220 кредитов. Щит поглощён.");}else{state.money=Math.max(0,state.money-100);log("Поражение. Повреждён грузовой отсек, штраф 100 кредитов.");}save()};
+render();
+</script></body></html>
