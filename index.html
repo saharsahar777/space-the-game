@@ -1,263 +1,44 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>SPACE 0.4</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SPACE 0.4 — Star System</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08051b;touch-action:none}
-#game{position:relative;width:100%;height:100dvh;min-height:480px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#24105b 0,#10072c 48%,#050817 100%)}
-canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
-.ship{position:absolute;left:50%;top:48%;width:0;height:0;transform:translate(-50%,-50%);z-index:4;filter:drop-shadow(0 0 8px #ff315d);pointer-events:none}
-.ship svg{width:58px;height:80px;overflow:visible;transform-origin:50% 50%}
-.controlbar{position:absolute;left:0;right:0;bottom:max(22px,env(safe-area-inset-bottom));display:flex;justify-content:center;align-items:center;gap:clamp(22px,9vw,48px);z-index:6}
-.ctrl{width:62px;height:62px;border-radius:50%;border:2px solid #a5faff;background:radial-gradient(circle at 35% 25%,#226f83,#09253c 70%);color:#dfffff;box-shadow:0 0 15px #21dfff66,inset 0 0 12px #36f5ff33;display:grid;place-items:center;font-size:25px;font-weight:900;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.ctrl.forward{width:76px;height:76px;border-color:#7dffe1;background:radial-gradient(circle at 35% 25%,#14c9a1,#00644f 70%);box-shadow:0 0 22px #00ffc477,inset 0 0 14px #caffef55;font-size:30px}
-.ctrl:active{transform:scale(.93);filter:brightness(1.4)}
-@media(min-width:700px){#game{max-width:430px;margin:auto;border-left:1px solid #46316b;border-right:1px solid #46316b}}
-</style>
-</head>
-<body>
-<div id="game">
-<canvas id="space"></canvas>
-<div class="ship" id="ship">
- <svg viewBox="0 0 64 88" shape-rendering="crispEdges" aria-label="Пиксельный корабль игрока">
-  <g stroke="#17142c" stroke-width="2" stroke-linejoin="miter">
-   <path fill="#9bff42" d="M8 42h8V25h5v-8h5v18h-5v20h-8v-7H8zM56 42h-8V25h-5v-8h-5v18h5v20h8v-7h5z"/>
-   <path fill="#d72d65" d="M27 3h10v8h5v10h5v19h-7v12H24V40h-7V21h5V11h5z"/>
-   <path fill="#f6d9e6" d="M27 3h10v8H27zM22 18h5v9h-5zM37 18h5v9h-5zM17 34h7v8h-7zM40 34h7v8h-7z"/>
-   <path fill="#3ce8ff" d="M29 17h6v7h4v17h-4v9h-6v-9h-4V24h4z"/>
-   <path fill="#fff1a8" d="M29 11h6v6h-6z"/>
-   <path fill="#a7b8ca" d="M24 49h16v7H24zM19 56h7v8h-7zM38 56h7v8h-7z"/>
-   <path fill="#ff4b9a" d="M21 64h5v12h-5zM38 64h5v12h-5z"/>
-   <path fill="#fff" d="M28 55h8v6h-8z"/>
-  </g>
-  <path d="M23 76h4l-2 8zM37 76h4l-2 8z" fill="#48f4ff"/>
- </svg>
-</div>
-<div class="controlbar">
- <button class="ctrl" id="left" aria-label="Повернуть влево">◀</button>
- <button class="ctrl forward" id="forward" aria-label="Лететь вперёд">▲</button>
- <button class="ctrl" id="right" aria-label="Повернуть вправо">▶</button>
-</div>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08051b;touch-action:none;font-family:Arial,sans-serif}#game{position:relative;width:100%;height:100dvh;min-height:480px;overflow:hidden;background:#08051b}canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}.ship{position:absolute;left:50%;top:48%;width:0;height:0;transform:translate(-50%,-50%);z-index:4;filter:drop-shadow(0 0 8px #ff315d);pointer-events:none}.ship svg{width:58px;height:80px;overflow:visible;transform-origin:50% 50%}.controlbar,.mapbar{position:absolute;left:0;right:0;bottom:max(20px,env(safe-area-inset-bottom));z-index:6;display:flex;justify-content:center;align-items:center;gap:clamp(16px,7vw,38px)}.ctrl,.mapbtn{border:2px solid #a5faff;background:radial-gradient(circle at 35% 25%,#226f83,#09253c 70%);color:#eaffff;box-shadow:0 0 15px #21dfff66,inset 0 0 12px #36f5ff33;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}.ctrl{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-size:25px;font-weight:900}.ctrl.forward{width:76px;height:76px;border-color:#7dffe1;background:radial-gradient(circle at 35% 25%,#14c9a1,#00644f 70%);font-size:30px}.mapbar{padding:0 16px;gap:12px}.mapbtn{min-height:52px;padding:0 18px;border-radius:14px;font-size:14px;font-weight:700;flex:1;max-width:220px}.mapbtn.primary{border-color:#7dffe1;background:linear-gradient(135deg,#087d78,#064c62)}.mapbtn:disabled{opacity:.35;filter:grayscale(1)}.ctrl:active,.mapbtn:active{transform:scale(.95);filter:brightness(1.3)}.toplabel{position:absolute;z-index:5;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;color:#d9eaff;text-shadow:0 0 12px #7b65ff;font-size:14px;letter-spacing:2px;pointer-events:none}.hint{position:absolute;z-index:5;left:12px;right:12px;bottom:112px;text-align:center;color:#b8c8ed;font-size:12px;text-shadow:0 1px 4px #000;pointer-events:none}.hidden{display:none!important}@media(min-width:700px){#game{max-width:430px;margin:auto;border-left:1px solid #46316b;border-right:1px solid #46316b}}
+</style></head><body><div id="game"><canvas id="space"></canvas>
+<div class="toplabel" id="title">СОЛНЕЧНАЯ СИСТЕМА</div><div class="hint" id="hint">Исследуйте систему. Удалитесь от Солнца, чтобы открыть карту галактики</div>
+<div class="ship" id="ship"><svg viewBox="0 0 64 88" shape-rendering="crispEdges"><g stroke="#17142c" stroke-width="2" stroke-linejoin="miter"><path fill="#9bff42" d="M8 42h8V25h5v-8h5v18h-5v20h-8v-7H8zM56 42h-8V25h-5v-8h-5v18h5v20h8v-7h5z"/><path fill="#d72d65" d="M27 3h10v8h5v10h5v19h-7v12H24V40h-7V21h5V11h5z"/><path fill="#f6d9e6" d="M27 3h10v8H27zM22 18h5v9h-5zM37 18h5v9h-5zM17 34h7v8h-7zM40 34h7v8h-7z"/><path fill="#3ce8ff" d="M29 17h6v7h4v17h-4v9h-6v-9h-4V24h4z"/><path fill="#fff1a8" d="M29 11h6v6h-6z"/><path fill="#a7b8ca" d="M24 49h16v7H24zM19 56h7v8h-7zM38 56h7v8h-7z"/><path fill="#ff4b9a" d="M21 64h5v12h-5zM38 64h5v12h-5z"/><path fill="#fff" d="M28 55h8v6h-8z"/></g><path d="M23 76h4l-2 8zM37 76h4l-2 8z" fill="#48f4ff"/></svg></div>
+<div class="controlbar" id="flightControls"><button class="ctrl" id="left">◀</button><button class="ctrl forward" id="forward">▲</button><button class="ctrl" id="right">▶</button></div>
+<div class="mapbar hidden" id="mapControls"><button class="mapbtn" id="backSystem">↩ В солнечную систему</button><button class="mapbtn primary" id="travel" disabled>Отправиться</button></div>
 </div>
 <script>
-(() => {
-  const canvas = document.getElementById('space');
-  const ctx = canvas.getContext('2d');
-  const game = document.getElementById('game');
-  const shipArt = document.querySelector('#ship svg');
-  const engineTrail = document.querySelector('.trail');
-
-  let width = 0;
-  let height = 0;
-  let pixelRatio = 1;
-  let heading = 0;
-  const turnStep = Math.PI / 12; // 15 градусов за нажатие
-  let fuel = 24;
-
-  let stars = [];
-  let nebulae = [];
-  let systems = [];
-
-  const random = (min, max) => Math.random() * (max - min) + min;
-
-  function createGalaxy() {
-    stars = Array.from({ length: 170 }, () => ({
-      x: random(0, width),
-      y: random(0, height),
-      size: random(1, 2),
-      brightness: random(0.3, 1),
-      phase: random(0, Math.PI * 2)
-    }));
-
-    nebulae = Array.from({ length: 10 }, () => ({
-      x: random(-60, width + 60),
-      y: random(20, height * 0.86),
-      size: random(35, 90),
-      color: Math.random() < 0.7 ? '#a000e8' : '#4c27bb',
-      opacity: random(0.1, 0.22)
-    }));
-
-    systems = [];
-
-    const positions = [
-      [0.16, 0.18],
-      [0.83, 0.22],
-      [0.18, 0.76],
-      [0.84, 0.78]
-    ];
-
-    positions.forEach(([x, y], index) => {
-      systems.push({
-        x: width * x,
-        y: height * y,
-        type: index % 5
-      });
-    });
-  }
-
-  function resize() {
-    pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    width = game.clientWidth;
-    height = game.clientHeight;
-
-    canvas.width = width * pixelRatio;
-    canvas.height = height * pixelRatio;
-    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx.imageSmoothingEnabled = false;
-
-    createGalaxy();
-  }
-
-  function drawBackground() {
-    const background = ctx.createLinearGradient(0, 0, width, height);
-    background.addColorStop(0, '#08051e');
-    background.addColorStop(0.55, '#12052f');
-    background.addColorStop(1, '#05091d');
-
-    ctx.fillStyle = background;
-    ctx.fillRect(0, 0, width, height);
-  }
-
-  function drawNebulae() {
-    nebulae.forEach(nebula => {
-      ctx.save();
-      ctx.globalAlpha = nebula.opacity;
-      ctx.fillStyle = nebula.color;
-
-      for (let part = 0; part < 4; part++) {
-        const offsetX = Math.cos(part * 1.7) * nebula.size * 0.35;
-        const offsetY = Math.sin(part * 1.9) * nebula.size * 0.25;
-        const radius = nebula.size * (0.65 + part * 0.1);
-
-        ctx.beginPath();
-        ctx.arc(nebula.x + offsetX, nebula.y + offsetY, radius, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      ctx.restore();
-    });
-  }
-
-  function drawStars(time) {
-    stars.forEach(star => {
-      const twinkle = 0.55 + 0.45 * Math.sin(time / 800 + star.phase);
-
-      ctx.globalAlpha = star.brightness * twinkle;
-      ctx.fillStyle = '#fff4dc';
-      ctx.fillRect(
-        Math.round(star.x),
-        Math.round(star.y),
-        star.size > 1.5 ? 2 : 1,
-        star.size > 1.5 ? 2 : 1
-      );
-    });
-
-    ctx.globalAlpha = 1;
-  }
-
-  function drawSystems() {
-    const colors = ['#e9f3ff', '#ff9d35', '#42ef9c', '#55dfff', '#d66cff'];
-
-    systems.forEach((system, index) => {
-      const color = colors[system.type];
-      const size = 25 + (index % 3) * 5;
-
-      ctx.save();
-      ctx.shadowBlur = 13;
-      ctx.shadowColor = color;
-      ctx.fillStyle = color + '33';
-      ctx.beginPath();
-      ctx.arc(system.x, system.y, size + 8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      // Круглая планета с объёмным освещением
-      const planet = ctx.createRadialGradient(
-        system.x - size * 0.35, system.y - size * 0.4, size * 0.08,
-        system.x, system.y, size
-      );
-      planet.addColorStop(0, '#ffffff');
-      planet.addColorStop(0.18, color);
-      planet.addColorStop(0.72, color);
-      planet.addColorStop(1, '#100b29');
-      ctx.fillStyle = planet;
-      ctx.beginPath();
-      ctx.arc(system.x, system.y, size, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Тонкая атмосферная кайма
-      ctx.strokeStyle = color;
-      ctx.globalAlpha = 0.7;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(system.x, system.y, size + 2, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-      ctx.restore();
-    });
-  }
-
-  function render(time) {
-    ctx.clearRect(0, 0, width, height);
-    drawBackground();
-    drawNebulae();
-    drawStars(time);
-    drawSystems();
-  }
-
-  function updateShip() {
-    shipArt.style.transform = `rotate(${heading}rad)`;
-  }
-
-  function turn(direction) {
-    heading += direction * turnStep;
-    updateShip();
-  }
-
-  function thrust() {
-    if (fuel <= 0) return;
-
-    fuel -= 1;
-
-    const stepDistance = 42;
-    const movementX = Math.sin(heading) * stepDistance;
-    const movementY = -Math.cos(heading) * stepDistance;
-
-    systems.forEach(system => {
-      system.x -= movementX;
-      system.y -= movementY;
-
-      if (system.x < -70) system.x = width + 70;
-      if (system.x > width + 70) system.x = -70;
-      if (system.y < -70) system.y = height + 70;
-      if (system.y > height + 70) system.y = -70;
-    });
-  }
-
-  function frame(time) {
-    render(time);
-    requestAnimationFrame(frame);
-  }
-
-  document.getElementById('left').addEventListener('click', () => turn(-1));
-  document.getElementById('right').addEventListener('click', () => turn(1));
-  document.getElementById('forward').addEventListener('click', thrust);
-
-  window.addEventListener('keydown', event => {
-    if (event.repeat) return;
-
-    if (event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') turn(-1);
-    if (event.key === 'ArrowRight' || event.key.toLowerCase() === 'd') turn(1);
-    if (event.key === 'ArrowUp' || event.key.toLowerCase() === 'w' || event.key === ' ') thrust();
-  });
-
-  window.addEventListener('resize', resize);
-
-  resize();
-  updateShip();
-  requestAnimationFrame(frame);
+(()=>{
+const canvas=document.getElementById('space'),ctx=canvas.getContext('2d'),game=document.getElementById('game');
+const shipArt=document.querySelector('#ship svg');
+let w=0,h=0,dpr=1,heading=0,mode='system',travelDistance=0,selected=null,currentSystem=0,stars=[],nebulae=[],galaxy=[],planets=[];
+const turnStep=Math.PI/12,exitDistance=560;const rand=(a,b)=>Math.random()*(b-a)+a;
+const colors=['#6edbff','#e6a2ff','#ffbd68','#80f0b1','#ff829f','#c5c8ff'];
+function makePlanets(){const count=3+Math.floor(Math.random()*3);planets=[];for(let i=0;i<count;i++){const orbit=105+i*rand(52,72);planets.push({orbit,angle:rand(0,Math.PI*2),size:rand(9,17),color:colors[Math.floor(rand(0,colors.length))],speed:rand(.000025,.00007)});}}
+function makeGalaxy(){galaxy=[];for(let i=0;i<100;i++){let x,y;do{x=rand(.07,.93);y=rand(.12,.88)}while(galaxy.some(s=>Math.hypot((s.x-x)*w,(s.y-y)*h)<23));galaxy.push({x,y,seed:Math.random(),name:`Система ${String(i+1).padStart(3,'0')}`,discovered:i===0});}currentSystem=0;}
+function resize(){dpr=Math.min(devicePixelRatio||1,2);w=game.clientWidth;h=game.clientHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.imageSmoothingEnabled=false;stars=Array.from({length:190},()=>({x:rand(0,w),y:rand(0,h),s:rand(.7,1.8),p:rand(0,6.28)}));nebulae=Array.from({length:8},()=>({x:rand(-30,w+30),y:rand(0,h),r:rand(50,120),c:Math.random()<.5?'#8b20dc':'#263bba'}));if(!galaxy.length)makeGalaxy();}
+function bg(t){let g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#08051e');g.addColorStop(.55,'#12052f');g.addColorStop(1,'#05091d');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);nebulae.forEach(n=>{ctx.save();ctx.globalAlpha=.11;ctx.fillStyle=n.c;ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,6.28);ctx.fill();ctx.restore();});stars.forEach(s=>{ctx.globalAlpha=.4+.6*(.5+.5*Math.sin(t/800+s.p));ctx.fillStyle='#fff4dc';ctx.fillRect(s.x,s.y,s.s,s.s);});ctx.globalAlpha=1;}
+function circlePlanet(x,y,r,color){let gr=ctx.createRadialGradient(x-r*.35,y-r*.4,r*.05,x,y,r);gr.addColorStop(0,'#fff');gr.addColorStop(.2,color);gr.addColorStop(.78,color);gr.addColorStop(1,'#15102d');ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle=color;ctx.globalAlpha=.65;ctx.lineWidth=1.5;ctx.stroke();ctx.globalAlpha=1;}
+function drawSystem(t){const sx=w/2-Math.sin(heading)*travelDistance,sy=h*.48+Math.cos(heading)*travelDistance;const sunR=43;let sun=ctx.createRadialGradient(sx-13,sy-16,3,sx,sy,sunR*1.6);sun.addColorStop(0,'#fffbd0');sun.addColorStop(.25,'#ffe36c');sun.addColorStop(.65,'#ff922f');sun.addColorStop(1,'#ff4d20');ctx.save();ctx.shadowColor='#ff9a32';ctx.shadowBlur=35;ctx.fillStyle=sun;ctx.beginPath();ctx.arc(sx,sy,sunR,0,Math.PI*2);ctx.fill();ctx.restore();
+planets.forEach((p,i)=>{const a=p.angle+t*p.speed;const x=sx+Math.cos(a)*p.orbit,y=sy+Math.sin(a)*p.orbit*.58;ctx.strokeStyle='#8b83bb55';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(sx,sy,p.orbit,p.orbit*.58,0,0,Math.PI*2);ctx.stroke();circlePlanet(x,y,p.size,p.color);});
+if(Math.hypot(sx-w/2,sy-h*.48)>exitDistance){mode='galaxy';selected=null;galaxy[currentSystem].discovered=true;updateUI();}}
+function drawGalaxy(){// galactic haze and soft spiral arms
+ctx.save();ctx.translate(w/2,h*.47);ctx.globalAlpha=.18;ctx.strokeStyle='#8d4bdb';ctx.lineWidth=30;for(let arm=0;arm<3;arm++){ctx.beginPath();for(let r=8;r<Math.min(w,h)*.55;r+=5){let a=arm*2.094+r*.018;let x=Math.cos(a)*r,y=Math.sin(a)*r*.55;if(r===8)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();}ctx.restore();
+const pts=galaxy.map((s,i)=>({s,i,x:s.x*w,y:s.y*h}));const here=pts[currentSystem];const reach= Math.min(w,h)*.31;pts.forEach(p=>{const d=Math.hypot(p.x-here.x,p.y-here.y);p.reachable=p.i!==currentSystem&&d<reach;});
+pts.forEach(p=>{if(p.reachable){ctx.save();ctx.setLineDash([3,5]);ctx.strokeStyle='#75eaff';ctx.lineWidth=1.5;ctx.globalAlpha=.85;ctx.beginPath();ctx.arc(p.x,p.y,13,0,Math.PI*2);ctx.stroke();ctx.restore();}});
+pts.forEach(p=>{const isHere=p.i===currentSystem,isSelected=p.i===selected;const r=isHere?6:isSelected?6:3.5;ctx.save();ctx.shadowColor=isHere?'#fff0a0':p.reachable?'#66eaff':'#a5a5d9';ctx.shadowBlur=isHere||p.reachable?13:4;ctx.fillStyle=isHere?'#fff2a6':p.s.discovered?'#9d8cff':p.reachable?'#7beaff':'#555477';ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();ctx.restore();if(isHere||isSelected){ctx.fillStyle='#e5e8ff';ctx.font='11px Arial';ctx.textAlign='center';ctx.fillText(isHere?'ТЕКУЩАЯ СИСТЕМА':p.s.discovered?p.s.name:'???',p.x,p.y-13);}});
+}
+function render(t){ctx.clearRect(0,0,w,h);bg(t);if(mode==='system')drawSystem(t);else drawGalaxy();requestAnimationFrame(render);}
+function updateUI(){const inMap=mode==='galaxy';document.getElementById('title').textContent=inMap?'КАРТА ГАЛАКТИКИ':'СОЛНЕЧНАЯ СИСТЕМА';document.getElementById('hint').textContent=inMap?'Выберите доступную систему. Неизвестные системы откроются после прибытия':'Исследуйте систему. Удалитесь от Солнца, чтобы открыть карту галактики';document.getElementById('flightControls').classList.toggle('hidden',inMap);document.getElementById('ship').classList.toggle('hidden',inMap);document.getElementById('mapControls').classList.toggle('hidden',!inMap);document.getElementById('travel').disabled=selected===null;}
+function turn(dir){heading+=dir*turnStep;shipArt.style.transform=`rotate(${heading}rad)`;}
+function thrust(){if(mode!=='system')return;travelDistance+=42;}
+function returnSystem(){mode='system';travelDistance=0;makePlanets();updateUI();}
+function travel(){if(selected===null)return;currentSystem=selected;galaxy[currentSystem].discovered=true;selected=null;heading=0;shipArt.style.transform='rotate(0rad)';returnSystem();}
+function pickSystem(e){const rect=canvas.getBoundingClientRect(),x=e.clientX-rect.left,y=e.clientY-rect.top,here=galaxy[currentSystem];const reach=Math.min(w,h)*.31;let best=-1,bestD=20;galaxy.forEach((s,i)=>{if(i===currentSystem)return;const d=Math.hypot(s.x*w-x,s.y*h-y);const fromHere=Math.hypot((s.x-here.x)*w,(s.y-here.y)*h);if(d<bestD&&fromHere<reach){best=i;bestD=d;}});selected=best<0?null:best;document.getElementById('travel').disabled=selected===null;}
+document.getElementById('left').addEventListener('click',()=>turn(-1));document.getElementById('right').addEventListener('click',()=>turn(1));document.getElementById('forward').addEventListener('click',thrust);document.getElementById('backSystem').addEventListener('click',returnSystem);document.getElementById('travel').addEventListener('click',travel);canvas.addEventListener('click',e=>{if(mode==='galaxy')pickSystem(e);});window.addEventListener('keydown',e=>{if(e.repeat)return;if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')turn(-1);if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')turn(1);if(e.key==='ArrowUp'||e.key.toLowerCase()==='w'||e.key===' ')thrust();});window.addEventListener('resize',resize);resize();makePlanets();updateUI();requestAnimationFrame(render);
 })();
-</script>
-</body></html>
+</script></body></html>
